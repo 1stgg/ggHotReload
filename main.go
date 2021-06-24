@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -12,6 +11,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 )
 
+var ggHotReloadVersion = "1.0.0"
 var param = map[string]string{
 	"sh":    "sh ./ggHR.sh",
 	"watch": "./",
@@ -45,20 +45,24 @@ func Debounce(fn func(int), ms float64) func(int) {
 
 // }
 var runParent = gg.Debounce(func() {
-	fmt.Println(39)
-	fmt.Printf("\n %c[1;40;32m%s%c[0m\n\n", 0x1B, "testPrintColor233", 0x1B)
-	fmt.Println(time.Now().Format("06/01/02 15:04:05"))
+	// fmt.Println(39)
+	// fmt.Printf("\n %c[1;40;32m%s%c[0m\n\n", 0x1B, "testPrintColor233", 0x1B)
+	// fmt.Println(time.Now().Format("06/01/02 15:04:05"))
+
 	gg.Parent(param["sh"])
 }, 500)
 
 func main() {
+	gg.PrintColor("[ggHR] "+ggHotReloadVersion, "warn")
+	// gg.PrintColor("[ggHR] to restart at any time, enter `rs`","warn")
+	gg.PrintColor("[ggHR] watching: "+param["watch"], "warn")
 	// flag.Parse()
 	if len(os.Args) > 0 {
 		for _, arg := range os.Args {
 			// fmt.Printf("args[%d]=%v\n", index, arg)
 			// fmt.Println(index, arg)
 			argArr := strings.Split(arg, "=")
-			fmt.Println(54, argArr[0])
+			// fmt.Println(54, argArr[0])
 			// param[argArr[0]] = argArr[1]
 			switch argArr[0] {
 			case "sh":

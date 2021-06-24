@@ -1,1 +1,1 @@
-555233
+console.log(1,"str",true,{a:666},undefined);
