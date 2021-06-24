@@ -1,15 +1,28 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+	"runtime"
+)
 
+func foo() {}
 func main() {
 	// string、number、boolean、null、undefined；
 	Log("abc", 1, false, nil, 1)
 	// Object  Array
 	Log(map[string]string{"a": "b", "b": "c"}, map[int]string{1: "b", 2: "b"}, map[string]int{"b": 1, "c": 1})
 	Log([]int{1, 2}, []string{"a", "b"})
-
 	// Function
+	test := func() {}
+	Log(func() {}, test, foo)
+
+	// Log(runtime.FuncForPC(reflect.ValueOf(test).Pointer()).Name())
+	// Log(runtime.FuncForPC(reflect.ValueOf(func() {}).Pointer()).Name())
+	// Log(runtime.FuncForPC(reflect.ValueOf(foo).Pointer()).Name())
+
+	// typeOfA := reflect.TypeOf(foo)
+	// fmt.Println(typeOfA.Name(), 2, typeOfA.Kind())
 }
 
 func Log(itf ...interface{}) {
@@ -51,9 +64,30 @@ func logs(itf ...interface{}) {
 		//     }
 		default:
 
-			fmt.Println(i)
+			if i != nil {
+				typeOfA := reflect.TypeOf(i)
+				// fmt.Println(typeOfA.Name(), typeOfA.Kind())
+				// fmt.Printf("%d", typeOfA.Kind())
+				// fmt.Print(typeOfA.Kind() == 19)
+				// var funcType reflect.Kind
+				// funcType :=
+				switch typeOfA.Kind() {
+				case 19: // func
+					logFunc(i)
+				default:
+					fmt.Println(i)
+				}
+			} else {
+				fmt.Println(i)
+			}
+
 		}
 	}
+}
+func logFunc(arg interface{}) {
+	funcName := runtime.FuncForPC(reflect.ValueOf(arg).Pointer()).Name()
+	ret := "[Function: " + funcName + "]"
+	fmt.Printf("%c[36m%s%c[0m", 0x1B, ret, 0x1B)
 }
 func logBool(arg bool) {
 	fmt.Printf("%c[33m%t%c[0m", 0x1B, arg, 0x1B)
