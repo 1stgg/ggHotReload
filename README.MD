@@ -9,12 +9,12 @@
 alias ggHR=ggHotReload可执行文件的路径
 
 # 使用
-ggHR [sh=./xx.sh] [watch=xxx] 
+ggHR [sh="sh ./ggHR.sh"] [watch="./"] 
 # path watch 默认当前路径
 ```
 
 参数
 |参数	|必填	  |默认值			|说明						|
 |-    |-    |-          |-              |
-|sh 	|否		|./ggHR.sh 	|执行bash文件路径	|
+|sh 	|否		|sh ./ggHR.sh	|执行bash文件路径	|
 |watch|否		|./					|监控路径				|
