@@ -4,7 +4,6 @@ import (
 	"log"
 	"os"
 	"strings"
-	"time"
 
 	"ggHotReload/lib/gg"
 
@@ -17,38 +16,7 @@ var param = map[string]string{
 	"watch": "./",
 }
 
-// func init() {
-// 	flag.StringVar(&sh, "sh", "sh ./ggHR.sh", "reload shell code")
-// 	flag.StringVar(&watch, "watch", "./", "watch file change path")
-// }
-
-func Debounce(fn func(int), ms float64) func(int) {
-	prev := time.Unix(0, 0)
-
-	return func(arg int) {
-		curr := time.Now()
-		delta := curr.Sub(prev).Seconds()
-		if delta < ms {
-			return
-		}
-		prev = curr // 可执行了之后，在刷新计时
-		fn(arg)
-	}
-}
-
-// func runParent() {
-// 	fmt.Println(39)
-// 	gg.ParentClose()
-// 	fmt.Printf("\n %c[1;40;32m%s%c[0m\n\n", 0x1B, "testPrintColor233", 0x1B)
-// 	fmt.Println(time.Now().Format("2019/10/29 16:47:38"))
-// 	gg.Parent(param["sh"])
-
-// }
 var runParent = gg.Debounce(func() {
-	// fmt.Println(39)
-	// fmt.Printf("\n %c[1;40;32m%s%c[0m\n\n", 0x1B, "testPrintColor233", 0x1B)
-	// fmt.Println(time.Now().Format("06/01/02 15:04:05"))
-
 	gg.Parent(param["sh"])
 }, 500)
 
@@ -66,7 +34,8 @@ func main() {
 			// param[argArr[0]] = argArr[1]
 			switch argArr[0] {
 			case "sh":
-				param["sh"] = argArr[1]
+				// param["sh"] = argArr[1]
+				param["sh"] = strings.Replace(argArr[1], ".$go", ".go", -1)
 			case "watch":
 				param["watch"] = argArr[1]
 			}

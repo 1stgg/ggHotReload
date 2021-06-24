@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"strings"
 	"sync"
+	"time"
 )
 
 var (
@@ -73,6 +74,7 @@ func Parent(cmdStr string) {
 	// Close the input and wait for exit
 
 	c.Wait()
+	time.Sleep(Ms(1000))
 	PrintColor("[ggHR] clean exit - waiting for changes before restart", "success")
 }
 
@@ -108,7 +110,7 @@ func listenRead(reader *bufio.Reader) {
 			answer, err := reader.ReadString('\n')
 			if err != nil {
 
-				// fmt.Println(err)
+				// fmt.Println(113, err)
 				islistenRead = false
 				break
 			}
